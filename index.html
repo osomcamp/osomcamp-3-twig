@@ -61,7 +61,7 @@
 						</div>
 						<div class="inner-right-50">
 							<div class="photobg-inner">
-								<div class="photobg colorfull contain" style="background-image: url('img/osomcamp-2-cli.jpg')">
+								<div class="photobg colorfull contain" style="background-image: url('img/osomcamp-3-twig.png')">
 								</div>
 							</div>
 						</div>
@@ -75,6 +75,7 @@
 							<div class="text">
 								<p>
 								<ul>
+									<li>default</li>
 									<li>pętlę for</li>
 									<li>parent</li>
 									<li>include</li>
@@ -87,6 +88,24 @@
 						</div>
                     </div>
                 </section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Default</h2>
+							<div class="text">
+<pre lang="twig"><code>{% if test != '' %}
+	{{ test }}
+{% else %}
+	Default value
+{% endif %}
+</code></pre>
+
+<p> A można prościej</p>
+<pre class="fragment" lang="twig"><code>{{ test|default('Default value') }}</code></pre>
+							</div>
+						</div>
+                    </div>
+				</section>
 
 				<section>
 					<div class="inner">
@@ -97,7 +116,7 @@
 	{{ user.username }}
 {% endfor %}</code></pre>
 
-<h2>Filtrowanie</h2>
+<p><strong>Filtrowanie</strong></p>
 <pre lang="twig"><code>{% for user in users|slice(0, 10) %}
 	{{ user.username }}
 {% endfor %}</code></pre>
@@ -194,7 +213,7 @@ To jest strona główna
 
 <pre class="fragment" lang="twig"><code>{% include('parts/pagincja.twig', { a: 'test' }, with_context = false) %}</code></pre>
 
-<p class="fragment"><strong>Jak zainlcudować jeden spośród kliku plików?</strong></p>
+<p class="fragment"><strong>Jak zaincludować jeden spośród kliku plików?</strong></p>
 
 <pre class="fragment" lang="twig"><code>{% include(['parts/pagincja-new.twig', 'parts/pagincja.twig']) %}</code></pre>
 
@@ -213,7 +232,7 @@ To jest strona główna
 							<div class="text">
 <p><strong>Macro to takie templatkowe funkcje</strong></p>
 
-<pre class="fragment" lang="twig"><code>{% macro testowe(id, value) %}
+<pre lang="twig"><code>{% macro testowe(id, value) %}
 	<div id="{{ id }}">{{ value }}</div>
 {% endmacro %}
 </code></pre>
@@ -228,10 +247,11 @@ To jest strona główna
 							<div class="text">
 <p><strong>Najpierw tworzymy plik z macrami np. form.twig</strong></p>
 
-<pre class="fragment" lang="twig"><code>{% macro input( name, value, label, placeholder, class ) %}
+<pre lang="twig"><code>{% macro input( name, value, label, placeholder, class ) %}
 	<label for="{{ name }}">
 		<span>{{ label }}:</span>
-		<input id="{{ name }}" placeholder="{{ placeholder }}" class="{{ class }}" name="{{ name }}" value="{{ value|e }}" />
+		<input id="{{ name }}" placeholder="{{ placeholder }}" 
+			   class="{{ class }}" name="{{ name }}" value="{{ value|e }}" />
 	</label>
 {% endmacro %}
 </code></pre>
@@ -244,7 +264,7 @@ To jest strona główna
 						<div class="inner-full">
 							<h2 class="title header-color">Macro</h2>
 							<div class="text">
-<pre class="fragment" lang="twig"><code>{% macro submit( value, class ) %}
+<pre lang="twig"><code>{% macro submit( value, class ) %}
 	<div class="row">
 		<div class="small-12 columns text-center medium-text-left">
 		<input type="submit" value="{{ value }}" class="{{ class }}" />
@@ -262,7 +282,7 @@ To jest strona główna
 						<div class="inner-full">
 							<h2 class="title header-color">Macro</h2>
 							<div class="text">
-<pre class="fragment" lang="twig"><code>{% macro select( name, value, label, options, class) %}
+<pre lang="twig"><code>{% macro select( name, value, label, options, class) %}
 	<label for="{{ name }}">
 		<span>{{ label }}:</span>
 		<select id="{{ name }}" name="{{ name }}" class="{{ class }}" required>
@@ -286,7 +306,7 @@ To jest strona główna
 							<h2 class="title header-color">Macro</h2>
 							<div class="text">
 
-<pre class="fragment" lang="twig"><code>{% import 'parts/form.twig as form' %}
+<pre lang="twig"><code>{% import 'parts/form.twig as form' %}
 <form>
 	{{ form.select( 'industry', user.get_field( 'industry' ), 'Industry', industry, '' ) }}
 	{{ form.input( 'user_email', user.user_email, 'Email', '', '' ) }}
@@ -297,7 +317,118 @@ To jest strona główna
 						</div>
 					</div>
 				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Embed</h2>
+							<div class="text">
+<p>Czasem byśmy chcieli użyć wielokrotengo extend - niestety nie można.</p>
+<pre lang="twig"><code>{% extends "base.twig" %}
 
+{% block content %}
+<div class="wrapper">
+	{% embed "two-columns.twig" %}
+		{% block left_columns %}
+			Some content for the left column
+		{% endblock %}
+
+		{% block right_column %}
+			Some content for the right box
+		{% endblock %}
+	{% endembed %}
+</div>
+{% endblock %}
+</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Embed</h2>
+							<div class="text">
+<p>two-columns.twig</p>
+<pre lang="twig"><code><div class="left column">
+	{% block left_columns %}
+		Default text
+	{% endblock %}
+</div>
+<div class="right column">
+	{% block right_column %}
+		Default text
+	{% endblock %}
+</div></code></pre>
+
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Embed</h2>
+							<div class="text">
+<p>Ostatecznie otrzymujemy:</p>
+<pre lang="twig"><code><div class="wrapper">
+	<div class="left column">
+		Some content for the left column
+	</div>
+	<div class="right column">
+		Some content for the right column
+	</div>
+</div>
+</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Variable functions</h2>
+							<div class="text">
+<pre lang="php"><code>$twig->addFunction(
+	new Twig_SimpleFunction( 'html_strong', function() { ... } )
+);
+$twig->addFunction(
+	new Twig_SimpleFunction( 'html_em', function() { ... } )
+);
+</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Variable functions</h2>
+							<div class="text">
+<pre lang="php"><code>$twig->addFunction(
+	'html_*', new Twig_Function_Function( 'html' )
+);
+
+function html( $property, $value ) {
+	return '<'.$property.'>'. $value .'<&#47;'.$property.'>';
+}
+
+</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<div class="inner">
+						<div class="inner-full">
+							<h2 class="title header-color">Variable functions</h2>
+							<div class="text">
+<pre lang="php"><code>{{ html_strong( 'strong text' ) }}
+{{ html_em( 'em text' ) }}
+</code></pre>
+							</div>
+						</div>
+					</div>
+				</section>
                 <section>
 					<div class="inner">
 						<div class="inner-full text-center">
