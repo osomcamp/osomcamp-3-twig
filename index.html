@@ -404,9 +404,12 @@ $twig->addFunction(
 						<div class="inner-full">
 							<h2 class="title header-color">Variable functions</h2>
 							<div class="text">
-<pre lang="php"><code>$twig->addFunction(
-	'html_*', new Twig_Function_Function( 'html' )
-);
+<pre lang="php"><code>add_filter('timber/twig', 'add_to_twig');
+
+function add_to_twig($twig) {
+    $twig->addFunction(new Twig_SimpleFunction('html_*', 'html'));
+    return $twig;
+}
 
 function html( $property, $value ) {
 	return '<'.$property.'>'. $value .'<&#47;'.$property.'>';
